@@ -6,7 +6,7 @@ BUILD_DIR=build
 
 MODEL=sky130_fd_pr__nfet_01v8
 
-PARAMS=tt_0.15_1 tt_0.15_10 tt_1.0_1 tt_1.0_10
+PARAMS=tt_0.15_1.0 tt_0.15_5.0 tt_0.15_10.0 tt_1.0_1.0 tt_1.0_5.0 tt_1.0_10.0
 RAW_FILES=$(addprefix $(BUILD_DIR)/,$(addsuffix .raw, $(PARAMS)))
 
 $(info $(RAW_FILES))

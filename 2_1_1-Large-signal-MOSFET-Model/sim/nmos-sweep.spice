@@ -30,7 +30,7 @@ save @m.XM1.m${MODEL}[sid]
 op
 write ${FILE}
 set appendwrite
-dc Vds 0 1.8 0.01 Vgs 0 1.8 0.1
+dc Vds 0 1.8 0.01 Vgs 0 1.8 0.2
 write ${FILE}
 quit
 .endc

@@ -33,7 +33,7 @@ def load_params(file):
     print(len(chunks[1]))
 
     i = 0
-    for c in chunks[1:]:
+    for c in chunks[1::]:
         plt.plot(Vds[i:i+len(c)], Id[i:i+len(c)], label="Vgs = {:1.2f}".format(c[0]))
         i = i + len(c)
 
@@ -44,14 +44,17 @@ def load_params(file):
     plt.ylabel('Id, A')
 
     plt.legend()
-    plt.show()
+
+    #plt.show()
+    plt.savefig('results/{}_{}_{}_Id_vs_Vds.png'.format(corner, length, width), format='png')
+    plt.clf()
 
     gm = plot1['data']['@m.xm1.msky130_fd_pr__nfet_01v8[gm]']
 
     # Plot gm as a function of Vds, Vgs
 
     i = 0
-    for c in chunks[1:]:
+    for c in chunks[1::]:
         plt.plot(Vds[i:i+len(c)], gm[i:i+len(c)], label="Vgs = {:1.2f}".format(c[0]))
         i = i + len(c)
 
@@ -62,16 +65,18 @@ def load_params(file):
     plt.ylabel('gm, S')
 
     plt.legend()
-    plt.show()
+    #plt.show()
+
+    plt.savefig('results/{}_{}_{}_Gm_vs_Vds.png'.format(corner, length, width), format='png')
+    plt.clf()
 
     # Plot gm / Id as a function of Vgs
-
 
     gm_on_ids = []
     Vgs_arr = []
 
     i = 0
-    for c in chunks[1:]:
+    for c in chunks[1::]:
         gm_on_Id = gm[i:i+len(c)] / Id[i:i+len(c)]
         gm_on_ids.append(gm_on_Id[len(gm_on_Id) // 2])
         Vgs_arr.append(c[0])
@@ -85,10 +90,30 @@ def load_params(file):
     plt.ylabel('gm/Id, S/A')
 
     plt.legend()
-    plt.show()
+    #plt.show()
+    plt.savefig('results/{}_{}_{}_gm_on_Id_vs_Vgs.png'.format(corner, length, width), format='png')
+    plt.clf()
+    
+    # Plot cgg as a function of Vds and Vgs
 
+    cgg = plot1['data']['@m.xm1.msky130_fd_pr__nfet_01v8[cgg]']
 
+    i = 0
+    for c in chunks[1::]:
+        plt.plot(Vds[i:i+len(c)], cgg[i:i+len(c)], label="Vgs = {:1.2f}".format(c[0]))
+        i = i + len(c)
 
+    plt.title('Cgg vs. Vds for values of Vgs for nmos corner = {}, length = {}, width = {}'.format(corner, length, width))
+
+    # Add x and y axis labels
+    plt.xlabel('Vds, Volts')
+    plt.ylabel('Cgg, F')
+
+    plt.legend()
+    #plt.show()
+
+    plt.savefig('results/{}_{}_{}_Cgg_vs_Vds.png'.format(corner, length, width), format='png')
+    plt.clf()
 
 
 # List all raw files in the build directory. The format is "corner_length_width.raw"
@@ -100,6 +125,8 @@ directory = 'build'
 
 # List all files that end with .raw
 raw_files = [f for f in os.listdir(directory) if f.endswith('.raw')]
+
+raw_files = sorted(raw_files)
 
 for f in raw_files:
     load_params(f)
